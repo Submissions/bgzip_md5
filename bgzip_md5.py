@@ -144,23 +144,5 @@ def compute_md5_of_uncompressed_data(gz_file_path):
     return out[:MD5_LENGTH].decode('ascii')
 
 
-"""
-Alternative untested implementation:
-import gzip
-import hashlib
-HASH_BLOCK_SIZE = 128 * 2 ** 10  # 128 kB
-def compute_md5_of_uncompressed_data(gz_file_path):
-    #Return the hex digest of the corresponding uncompressed data.#
-    md5_of_uncompressed_data = hashlib.md5()
-    with gzip.open(gz_file_path) as fin:
-        while True:
-            data = fin.read(HASH_BLOCK_SIZE)
-            if not data:
-                break
-            md5_of_uncompressed_data.update(data)
-    return md5_of_uncompressed_data.hexdigest()
-"""
-
-
 if __name__ == '__main__':
     main()
