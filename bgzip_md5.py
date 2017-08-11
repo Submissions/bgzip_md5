@@ -57,21 +57,26 @@ def run(dest_dir, input_files):
         output_file_base = os.path.join(output_dir_path, file_name)
         gz_file_path = output_file_base + '.gz'
         md5_file_path = output_file_base + '.md5'
-        template = "tee >(bgzip > {1}) < {0} | md5sum"
-        cmd = template.format(shlex.quote(input_file_path),
-                              shlex.quote(gz_file_path))
-        logger.debug(cmd)
-        proc = subprocess.run(['bash', '-c', cmd],
-                              stdin=subprocess.DEVNULL,
-                              stdout=subprocess.PIPE,
-                              universal_newlines=True,
-                              check=True)
-        md5sum_line = proc.stdout.rstrip()
-        assert md5sum_line[-1] == '-'
-        md5sum_out_line = '{}{}\n'.format(md5sum_line[:-1], file_name)
-        with open(md5_file_path, 'w') as fout:
-            fout.write(md5sum_out_line)
-        logger.debug(md5sum_out_line.rstrip())
+        compress(input_file_path, file_name, gz_file_path, md5_file_path)
+
+
+def compress(input_file_path, file_name, gz_file_path, md5_file_path):
+    """Compress a single file, while computing the MD5 of the original."""
+    template = "tee >(bgzip > {1}) < {0} | md5sum"
+    cmd = template.format(shlex.quote(input_file_path),
+                          shlex.quote(gz_file_path))
+    logger.debug(cmd)
+    proc = subprocess.run(['bash', '-c', cmd],
+                          stdin=subprocess.DEVNULL,
+                          stdout=subprocess.PIPE,
+                          universal_newlines=True,
+                          check=True)
+    md5sum_line = proc.stdout.rstrip()
+    assert md5sum_line[-1] == '-'
+    md5sum_out_line = '{}{}\n'.format(md5sum_line[:-1], file_name)
+    with open(md5_file_path, 'w') as fout:
+        fout.write(md5sum_out_line)
+    logger.debug(md5sum_out_line.rstrip())
 
 
 if __name__ == '__main__':
