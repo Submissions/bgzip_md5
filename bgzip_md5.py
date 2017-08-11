@@ -12,9 +12,11 @@ import subprocess
 import sys
 
 
+__version__ = '2.0.0-rc1'
+MD5_LENGTH = 32  # The MD5 hex digest is always 32 characters.
+
 logger = logging.getLogger(__name__)
 
-MD5_LENGTH = 32  # The MD5 hex digest is always 32 characters.
 
 
 def main():
@@ -46,6 +48,8 @@ def parse_args():
                         ' --dest_dir and --check.')
     parser.add_argument('input_files', nargs='*')
     parser.add_argument('-v', '--verbose', action='store_true')
+    parser.add_argument('--version', action='version',
+                        version='%(prog)s {}'.format(__version__))
     args = parser.parse_args()
     if (args.dest_dir or args.both) and args.check:
         parser.error('Cannot have --check and also --dest_dir or --check.')
