@@ -34,10 +34,18 @@ if [ $(cut -d' ' -f3- target/test_4/test_4b.log | grep ^ERROR | wc -l) -ne 1 ]; 
     echo "wrong number of ERROR lines in test_4b.log"
 fi
 
-./bgzip_md5.py -cv "$TARGET"/input_{a,b} 2> "$TARGET"/test_4ab.log
+./bgzip_md5.py -cv "$TARGET"/input_{a,b} 2> "$TARGET"/test_4c.log
 if [[ $? == 0 ]]; then
-    echo "did not get expected error; see test_4ab.log"
+    echo "did not get expected error; see test_4c.log"
 fi
-if [ $(cut -d' ' -f3- target/test_4/test_4ab.log | grep ^ERROR | wc -l) -ne 1 ]; then
-    echo "wrong number of ERROR lines in test_4ab.log"
+if [ $(cut -d' ' -f3- target/test_4/test_4c.log | grep ^ERROR | wc -l) -ne 1 ]; then
+    echo "wrong number of ERROR lines in test_4c.log"
+fi
+
+./bgzip_md5.py -cv "$TARGET"/input_{a,c,a,d,a} 2> "$TARGET"/test_4d.log
+if [[ $? == 0 ]]; then
+    echo "did not get expected error; see test_4d.log"
+fi
+if [ $(cut -d' ' -f3- target/test_4/test_4d.log | grep ^ERROR | wc -l) -ne 2 ]; then
+    echo "wrong number of ERROR lines in test_4d.log"
 fi
