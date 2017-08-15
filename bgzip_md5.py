@@ -12,7 +12,7 @@ import subprocess
 import sys
 
 
-__version__ = '2.0.0-rc1'
+__version__ = '1.1.0-rc1'
 MD5_LENGTH = 32  # The MD5 hex digest is always 32 characters.
 
 logger = logging.getLogger(__name__)
