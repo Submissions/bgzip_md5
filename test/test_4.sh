@@ -18,7 +18,7 @@ bgzip input_a
 bgzip input_b
 
 cd "$ROOT"
-./bgzip_md5.py -cv "$TARGET"/input_a  2> "$TARGET"/test_4a.log
+./bgzip_md5.py -cv "$TARGET"/input_a 2> "$TARGET"/test_4a.log
 if [[ $? != 0 ]]; then
     echo "got unexpected error; see test_4a.log"
 fi
@@ -26,7 +26,7 @@ if [ $(cut -d' ' -f3- target/test_4/test_4a.log | grep ^ERROR | wc -l) -ne 0 ]; 
     echo "wrong number of ERROR lines in test_4a.log"
 fi
 
-./bgzip_md5.py -cv "$TARGET"/input_b  2> "$TARGET"/test_4b.log
+./bgzip_md5.py -cv "$TARGET"/input_b 2> "$TARGET"/test_4b.log
 if [[ $? == 0 ]]; then
     echo "did not get expected error; see test_4b.log"
 fi
@@ -34,7 +34,7 @@ if [ $(cut -d' ' -f3- target/test_4/test_4b.log | grep ^ERROR | wc -l) -ne 1 ]; 
     echo "wrong number of ERROR lines in test_4b.log"
 fi
 
-./bgzip_md5.py -cv "$TARGET"/input_{a,b}  2> "$TARGET"/test_4ab.log
+./bgzip_md5.py -cv "$TARGET"/input_{a,b} 2> "$TARGET"/test_4ab.log
 if [[ $? == 0 ]]; then
     echo "did not get expected error; see test_4ab.log"
 fi
