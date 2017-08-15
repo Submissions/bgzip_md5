@@ -18,7 +18,6 @@ MD5_LENGTH = 32  # The MD5 hex digest is always 32 characters.
 logger = logging.getLogger(__name__)
 
 
-
 def main():
     args = parse_args()
     config_logging(args)
@@ -119,7 +118,8 @@ def check(gz_file_path, md5_file_path):
     with open(md5_file_path) as fin:
         expected = fin.readline()[:MD5_LENGTH]
     if expected != observed:
-        logger.error('MD5 mismatch for %s, %s != %s', gz_file_path, expected, observed)
+        logger.error('MD5 mismatch for %s, %s != %s',
+                     gz_file_path, expected, observed)
         return False
     return True
 
@@ -131,8 +131,8 @@ def compute_md5_of_uncompressed_data(gz_file_path):
     # would have to use gzcat rather than zcat, and gzcat is not a thing
     # on most Linux systems. Best to be completely explicit.
     zcat = subprocess.Popen(['gzip', '-c', '-d', gz_file_path],
-                             stdin=subprocess.DEVNULL,
-                             stdout=subprocess.PIPE)
+                            stdin=subprocess.DEVNULL,
+                            stdout=subprocess.PIPE)
     md5sum = subprocess.Popen('md5sum',
                               stdin=zcat.stdout,
                               stdout=subprocess.PIPE)
