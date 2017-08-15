@@ -30,7 +30,7 @@ fi
 if [[ $? == 0 ]]; then
     echo "did not get expected error; see test_4b.log"
 fi
-if [ $(cut -d' ' -f3- target/test_4/test_4b.log | grep ^ERROR | wc -l) -ne 1 ]; then
+if [ $(cut -d' ' -f3- target/test_4/test_4b.log | grep ^ERROR | wc -l) -ne 2 ]; then
     echo "wrong number of ERROR lines in test_4b.log"
 fi
 
@@ -38,7 +38,7 @@ fi
 if [[ $? == 0 ]]; then
     echo "did not get expected error; see test_4c.log"
 fi
-if [ $(cut -d' ' -f3- target/test_4/test_4c.log | grep ^ERROR | wc -l) -ne 1 ]; then
+if [ $(cut -d' ' -f3- target/test_4/test_4c.log | grep ^ERROR | wc -l) -ne 2 ]; then
     echo "wrong number of ERROR lines in test_4c.log"
 fi
 
