@@ -2,6 +2,8 @@
 
 # Run all the tests.
 
+# TODO: test -b option
+
 rm -rf target/test.log
 
 for t in test/test_?.sh; do
