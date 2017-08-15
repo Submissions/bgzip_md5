@@ -88,6 +88,9 @@ def run(dest_dir, input_files, compressing, checking):
                 hashes_match = check(gz_file_path, md5_file_path)
                 if not hashes_match:
                     encountered_errors = True
+            except NoRegularFile as e:
+                logger.error('not a regular file: %s', gz_file_path)
+                encountered_errors = True
             except Exception as e:
                 logger.exception('error checking %s', gz_file_path)
                 encountered_errors = True
@@ -156,6 +159,9 @@ def compute_md5_of_uncompressed_data(gz_file_path):
     # which on all unix systems is the same as "gzip -c -d". On BSD, we
     # would have to use gzcat rather than zcat, and gzcat is not a thing
     # on most Linux systems. Best to be completely explicit.
+    gz_path = Path(gz_file_path)
+    if not gz_path.is_file():
+        raise NoRegularFile(str(gz_path))
     zcat = subprocess.Popen(['gzip', '-c', '-d', gz_file_path],
                             stdin=subprocess.DEVNULL,
                             stdout=subprocess.PIPE)
@@ -165,13 +171,21 @@ def compute_md5_of_uncompressed_data(gz_file_path):
     out, err = md5sum.communicate()
     zcat.wait()
     if md5sum.returncode:
-        raise Exception('md5sum returned error {} for {}'.format(
-                        md5sum.returncode, gz_file_path))
+        raise ChildProcessError('md5sum returned error {} for {}'.format(
+                                md5sum.returncode, gz_file_path))
     if zcat.returncode:
-        raise Exception('gzip -c -d returned error {} for {}'.format(
-                        zcat.returncode, gz_file_path))
+        raise ChildProcessError('gzip -c -d returned error {} for {}'.format(
+                                zcat.returncode, gz_file_path))
     # We know that this is hexadecimal digits in ASCII.
     return out[:MD5_LENGTH].decode('ascii')
+
+
+class NoRegularFile(Exception):
+    """Either the file is missing or there is something not a file there."""
+
+
+class ChildProcessError(Exception):
+    """Child process returned nonzero returncode."""
 
 
 if __name__ == '__main__':
