@@ -142,7 +142,7 @@ def compute_md5_of_uncompressed_data(gz_file_path):
                         md5sum.returncode, gz_file_path))
     zcat.wait()
     if zcat.returncode:
-        raise Exception('gzip -c -d returned error %s for %s'.format(
+        raise Exception('gzip -c -d returned error {} for {}'.format(
                         zcat.returncode, gz_file_path))
     # We know that this is hexadecimal digits in ASCII.
     return out[:MD5_LENGTH].decode('ascii')
