@@ -138,12 +138,12 @@ def compute_md5_of_uncompressed_data(gz_file_path):
                               stdout=subprocess.PIPE)
     out, err = md5sum.communicate()
     if md5sum.returncode:
-        raise Exception('md5sum returned error %s for %s',
-                        md5sum.returncode, gz_file_path)
+        raise Exception('md5sum returned error {} for {}'.format(
+                        md5sum.returncode, gz_file_path))
     zcat.wait()
     if zcat.returncode:
-        raise Exception('gzip -c -d returned error %s for %s',
-                        zcat.returncode, gz_file_path)
+        raise Exception('gzip -c -d returned error %s for %s'.format(
+                        zcat.returncode, gz_file_path))
     # We know that this is hexadecimal digits in ASCII.
     return out[:MD5_LENGTH].decode('ascii')
 
