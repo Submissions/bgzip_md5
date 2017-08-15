@@ -137,10 +137,10 @@ def compute_md5_of_uncompressed_data(gz_file_path):
                               stdin=zcat.stdout,
                               stdout=subprocess.PIPE)
     out, err = md5sum.communicate()
+    zcat.wait()
     if md5sum.returncode:
         raise Exception('md5sum returned error {} for {}'.format(
                         md5sum.returncode, gz_file_path))
-    zcat.wait()
     if zcat.returncode:
         raise Exception('gzip -c -d returned error {} for {}'.format(
                         zcat.returncode, gz_file_path))
